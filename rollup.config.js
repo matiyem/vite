@@ -9,7 +9,7 @@ import svg from 'rollup-plugin-svg';
 
 import { terser } from 'rollup-plugin-terser';
 
-export default ({
+export default defineConfig ({
 
     input: 'src/App.jsx', // فایل اصلی SDK شما
     output: [
@@ -17,7 +17,11 @@ export default ({
             file: 'dist/sdk.js', // نام فایل خروجی SDK
             format: 'umd', // فرمت خروجی (می‌تواند umd، esm و یا iife باشد)
             name: 'MySDKComponent', // نام متغیری که برای دسترسی به SDK در محیط‌های غیر ماژولار استفاده می‌شود
-            exports:"default"
+            // exports:"default",
+            globals: {
+                react: 'React', // نام متغیر گلوبال برای React
+                'react-dom': 'ReactDOM', // نام متغیر گلوبال برای ReactDOM
+            },
 
 
         },
