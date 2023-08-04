@@ -5,16 +5,19 @@ import babel from '@rollup/plugin-babel';
 import postcss from 'rollup-plugin-postcss';
 import image from '@rollup/plugin-image';
 import svg from 'rollup-plugin-svg';
+import path from 'path';
+
 
 
 import { terser } from 'rollup-plugin-terser';
 
 export default defineConfig ({
-
-    input: 'src/App.jsx', // فایل اصلی SDK شما
+    // entry: path.join(__dirname, 'src/App.jsx'),
+    //
+    input: path.join(__dirname, 'src/App.jsx'), // فایل اصلی SDK شما
     output: [
         {
-            file: 'dist/sdk.js', // نام فایل خروجی SDK
+            file: path.resolve(__dirname, 'dist/sdk.js'), // تنظیم مسیر کامل فایل خروجی
             format: 'umd', // فرمت خروجی (می‌تواند umd، esm و یا iife باشد)
             name: 'MySDKComponent', // نام متغیری که برای دسترسی به SDK در محیط‌های غیر ماژولار استفاده می‌شود
             // exports:"default",
@@ -29,11 +32,15 @@ export default defineConfig ({
     ],
 
     plugins: [
-        nodeResolve(),
+        nodeResolve({
+            extensions: ['.js', '.jsx']
+        }),
         commonjs(),
+        // babel(),
         babel({
             babelHelpers: 'bundled',
-            exclude: 'node_modules/**', // اگر نیازی به تبدیل فایل‌های node_modules ندارید
+            presets: ["@babel/preset-env", "@babel/preset-react"],
+            extensions: ['.js','.jsx']
         }),
         postcss({
             extract: false, // جدا کردن فایل‌های CSS از فایل‌های JS
